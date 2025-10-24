@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentient AGI Chatbot</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #000814, #001233 70%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      overflow: hidden;
+    }
+    header {
+      font-size: 2rem;
+      margin: 20px 0;
+      color: #00b4d8;
+      text-shadow: 0 0 15px #00b4d8;
+    }
+    #chatbox {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid #00b4d8;
+      border-radius: 15px;
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      height: 70vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      box-shadow: 0 0 25px rgba(0,180,216,0.3);
+    }
+    .msg {
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .user {
+      align-self: flex-end;
+      background: #0077b6;
+      padding: 10px 15px;
+      border-radius: 15px 15px 0 15px;
+      max-width: 70%;
+    }
+    .bot {
+      align-self: flex-start;
+      background: #003566;
+      padding: 10px 15px;
+      border-radius: 15px 15px 15px 0;
+      max-width: 80%;
+    }
+    #inputArea {
+      display: flex;
+      margin-top: 15px;
+      width: 90%;
+      max-width: 600px;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #00b4d8;
+      border-radius: 10px 0 0 10px;
+      background: #001d3d;
+      color: white;
+      font-size: 1rem;
+      outline: none;
+    }
+    button {
+      background: #00b4d8;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 0 10px 10px 0;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover { background: #0077b6; }
+    .typing {
+      color: #00b4d8;
+      font-style: italic;
+      margin: 5px 0 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>🤖 Sentient AGI Chatbot</header>
+
+  <div id="chatbox"></div>
+
+  <div id="inputArea">
+    <input type="text" id="userInput" placeholder="Ask about Sentient, AGI, or Contributions..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    const chatbox = document.getElementById('chatbox');
+
+    const faqs = {
+      "what is sentient": "Sentient is building the world’s first open, community-built AGI — a direct alternative to closed AI systems by OpenAI, Anthropic, and others.",
+      "mission": "Our mission is to make AGI loyal to humanity — not to corporations — through community-built, transparent, and ethical AI systems.",
+      "loyal ai": "Loyal AI = Alignment + Ownership + Control. It means AI that reflects community values, is owned by the community, and governed by collective input.",
+      "agi roles": "There are four main AGI roles: Artist, Builder, Educator, and Helper. Each focuses on a unique type of contribution within the community.",
+      "how to contribute": "You can contribute by creating content, building tools, helping others, or educating the community. Share your work in the relevant Discord channels.",
+      "builder agi": "Builder AGIs create tools, dashboards, and bots that empower the community. High-quality builders showcase creativity and collaboration.",
+      "artist agi": "Artist AGIs create original artworks, visuals, and animations that represent the Sentient vision. AI-generated art must be original, not mass-produced.",
+      "educator agi": "Educator AGIs write deep-dive threads, blogs, and guides that explain Sentient concepts with clarity and insight.",
+      "helper agi": "Helpers maintain a positive and inclusive community by guiding newcomers and supporting others in discussions.",
+      "whitepaper": "You can read the Sentient Whitepaper on Model Loyalty here: https://arxiv.org/abs/2411.03887",
+      "value creation": "Sentient connects users and AI builders through Sentient Chat — a self-sustaining ecosystem that rewards both creators and users.",
+      "roles promotion": "Submit your AGI role promotion requests every Friday through the official Notion link. Promotions are based on quality and visibility of contributions."
+    };
+
+    function addMessage(sender, text) {
+      const msg = document.createElement('div');
+      msg.classList.add('msg', sender);
+      msg.innerHTML = text;
+      chatbox.appendChild(msg);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage('user', text);
+      input.value = '';
+      addTyping();
+      setTimeout(() => {
+        removeTyping();
+        const response = getResponse(text.toLowerCase());
+        addMessage('bot', response);
+      }, 1200);
+    }
+
+    function addTyping() {
+      const typing = document.createElement('div');
+      typing.classList.add('typing');
+      typing.id = 'typing';
+      typing.textContent = 'Sentient Bot is typing...';
+      chatbox.appendChild(typing);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function removeTyping() {
+      const typing = document.getElementById('typing');
+      if (typing) typing.remove();
+    }
+
+    function getResponse(input) {
+      for (let key in faqs) {
+        if (input.includes(key)) return faqs[key];
+      }
+      return "I'm not sure yet — try rephrasing or visit Sentient Discord for more details.";
+    }
+  </script>
+</body>
+</html>
